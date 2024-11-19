@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matee</title>
+    <style>
+        /* Basic styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212; /* Dark background color */
+            font-family: Arial, sans-serif; /* Font family */
+            color: #ffffff; /* Text color */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Light mode styling */
+        .light-mode {
+            background-color: #f5f5f5;
+            color: #121212;
+        }
+
+        /* Container for main content */
+        .container {
+            background: rgba(33, 33, 33, 0.9); /* Dark background with transparency */
+            padding: 30px;
+            width: 320px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7); /* Shadow effect */
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        /* Light mode container styling */
+        .light-mode .container {
+            background-color: #e6f5ff; /* Light blue color for container in light mode */
+        }
+
+        /* Header style */
+        .header {
+            font-size: 32px;
+            font-weight: bold;
+            color: #90caf9; /* Light blue color */
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+        }
+
+        /* Light mode header color */
+        .light-mode .header {
+            color: #537fad; /* Darker blue color for better readability in light mode */
+        }
+
+        /* Button style */
+        .btn {
+            background-color: #90caf9; /* Light blue button */
+            color: #121212; /* Dark text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #81c784; /* Green on hover */
+        }
+
+        /* Buttons next to each other */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container .btn {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            matee.xyz
+        </div>
+
+        <a href="https://profile.matee.xyz" target="_blank">
+            <button class="btn" id="profile-btn">Profile</button>
+        </a>
+        <a href="https://debts.matee.xyz" target="_blank">
+            <button class="btn" id="debts-btn">Debts</button>
+        </a>
+        <a href="https://accounts.matee.xyz" target="_blank">
+            <button class="btn" id="accounts-btn">Accounts</button>
+        </a>
+        <a href="https://status.matee.xyz" target="_blank">
+            <button class="btn" id="status-btn">Status</button>
+        </a>
+
+        <!-- Buttons for dark/light mode and language toggle -->
+        <div class="button-container">
+            <button class="btn" id="mode-toggle">Switch to Light Mode</button>
+            <button class="btn" id="lang-toggle">Váltás magyarra</button>
+        </div>
+    </div>
+
+    <script>
+        // Default settings
+        let isDarkMode = true;
+        let isEnglish = true;
+
+        const modeButton = document.getElementById('mode-toggle');
+        const langButton = document.getElementById('lang-toggle');
+        const body = document.body;
+
+        // Function to toggle dark and light mode
+        modeButton.addEventListener('click', function() {
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                body.classList.remove('light-mode');
+                modeButton.textContent = isEnglish ? 'Switch to Light Mode' : 'Sötét mód'; // Updated to 'Sötét mód' for Hungarian
+            } else {
+                body.classList.add('light-mode');
+                modeButton.textContent = isEnglish ? 'Switch to Dark Mode' : 'Világos mód';
+            }
+        });
+
+        // Function to toggle between English and Hungarian
+        langButton.addEventListener('click', function() {
+            isEnglish = !isEnglish;
+            if (isEnglish) {
+                langButton.textContent = 'Váltás magyarra';
+                // Update text content for English
+                document.querySelector('.header').textContent = 'matee.xyz';
+                document.querySelectorAll('.btn')[0].textContent = 'Profile';
+                document.querySelectorAll('.btn')[1].textContent = 'Debts';
+                document.querySelectorAll('.btn')[2].textContent = 'Accounts';
+                document.querySelectorAll('.btn')[3].textContent = 'Status';
+                modeButton.textContent = 'Switch to Light Mode'; // Update dark mode button label in English
+            } else {
+                langButton.textContent = 'Switch to English';
+                // Update text content for Hungarian
+                document.querySelector('.header').textContent = 'matee.xyz';
+                document.querySelectorAll('.btn')[0].textContent = 'Profil';
+                document.querySelectorAll('.btn')[1].textContent = 'Tartozások';
+                document.querySelectorAll('.btn')[2].textContent = 'Fiókok';
+                document.querySelectorAll('.btn')[3].textContent = 'Státusz';
+                modeButton.textContent = 'Sötét mód'; // Updated dark mode button text for Hungarian
+            }
+        });
+    </script>
+
+</body>
+</html>
