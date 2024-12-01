@@ -109,6 +109,11 @@
         <a href="https://status.matee.xyz" target="_blank">
             <button class="btn" id="status-btn">Status</button>
         </a>
+        
+        <!-- New Appointments button -->
+        <a href="https://appointments-7f596.web.app" target="_blank">
+            <button class="btn" id="appointments-btn">Appointments</button>
+        </a>
 
         <!-- Buttons for dark/light mode and language toggle -->
         <div class="button-container">
@@ -149,6 +154,7 @@
                 document.querySelectorAll('.btn')[1].textContent = 'Debts';
                 document.querySelectorAll('.btn')[2].textContent = 'Accounts';
                 document.querySelectorAll('.btn')[3].textContent = 'Status';
+                document.querySelectorAll('.btn')[4].textContent = 'Appointments';
                 modeButton.textContent = 'Switch to Light Mode'; // Update dark mode button label in English
             } else {
                 langButton.textContent = 'Switch to English';
@@ -158,6 +164,7 @@
                 document.querySelectorAll('.btn')[1].textContent = 'Tartozások';
                 document.querySelectorAll('.btn')[2].textContent = 'Fiókok';
                 document.querySelectorAll('.btn')[3].textContent = 'Státusz';
+                document.querySelectorAll('.btn')[4].textContent = 'Időpontfoglalás';
                 modeButton.textContent = 'Sötét mód'; // Updated dark mode button text for Hungarian
             }
         });
