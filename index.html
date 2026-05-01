@@ -1,10 +1,17 @@
+#######vibecoded the whole thing xd########
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>big biznis here</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Montserrat:wght@420&display=swap">
     <style>
+        :root {
+            --color-back: #1a2428;
+        }
+
         body {
             text-align: center;
             margin: 0;
@@ -22,9 +29,74 @@
         }
 
         .greeting {
-            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            font-family: "Comic Sans MS", "Comic Sans", "Comic Neue", cursive;
             font-size: 5rem;
             margin-top: 30px;
+        }
+
+        /* Button section */
+        .button-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2em;
+            margin-top: 2.5em;
+            margin-bottom: 2.5em;
+        }
+
+        .button {
+            background: var(--color-back);
+            border-radius: 0.5em;
+            box-shadow:
+                inset 0px -6px 18px -6px rgba(3, 15, 20, 0),
+                inset rgba(54, 69, 75, 1) -1px -1px 6px 0px,
+                inset 12px 0px 12px -6px rgba(3, 15, 20, 0),
+                inset -12px 0px 12px -6px rgba(3, 15, 20, 0),
+                rgba(54, 69, 75, 1) -1px -1px 6px 0px;
+            border: solid 2px #030f14;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0.7em 1.7em;
+            outline: none;
+            transition: all 0.3s;
+            user-select: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .button:hover {
+            box-shadow:
+                inset 0px -6px 18px -6px rgba(3, 15, 20, 1),
+                inset 0px 6px 18px -6px rgba(3, 15, 20, 1),
+                inset 12px 0px 12px -6px rgba(3, 15, 20, 0),
+                inset -12px 0px 12px -6px rgba(3, 15, 20, 0),
+                -1px -1px 6px 0px rgba(54, 69, 75, 1);
+        }
+
+        .button:active {
+            box-shadow:
+                inset 0px -12px 12px -6px rgba(3, 15, 20, 1),
+                inset 0px 12px 12px -6px rgba(3, 15, 20, 1),
+                inset 12px 0px 12px -6px rgba(3, 15, 20, 1),
+                inset -12px 0px 12px -6px rgba(3, 15, 20, 1),
+                -1px -1px 6px 0px rgba(54, 69, 75, 1);
+        }
+
+        .text {
+            color: #d0a756;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 420;
+            margin: auto;
+            transition: all 0.3s;
+            width: fit-content;
+        }
+
+        .button:hover .text {
+            transform: scale(0.9);
+        }
+
+        .button:active .text {
+            transform: scale(0.8);
         }
     </style>
 </head>
@@ -35,6 +107,15 @@
     </a>
 
     <h1 class="greeting">Oye mate!</h1>
+
+    <div class="button-row">
+        <a href="https://matee.xyz/main" class="button">
+            <div class="text">Nyilvános Szolgáltatások</div>
+        </a>
+        <a href="https://auth.matee.xyz" class="button">
+            <div class="text">Belső Portál</div>
+        </a>
+    </div>
 
 </body>
 </html>
