@@ -9,30 +9,25 @@
         :root {
             --color-back: #1a2428;
         }
-
         body {
             text-align: center;
             margin: 0;
             padding: 20px;
-            background-color: black; 
+            background-color: black;
             color: white;
         }
-
         .landing-img {
             display: block;
             margin: 0 auto;
             width: 70%;
             height: 50vh;
-            object-fit: fill;  
+            object-fit: fill;
         }
-
         .greeting {
             font-family: "Comic Sans MS", "Comic Sans", "Comic Neue", cursive;
             font-size: 5rem;
             margin-top: 30px;
         }
-
-        /* Button section */
         .button-row {
             display: flex;
             flex-direction: column;
@@ -41,7 +36,6 @@
             margin-top: 2.5em;
             margin-bottom: 2.5em;
         }
-
         .button {
             background: var(--color-back);
             border-radius: 0.5em;
@@ -61,7 +55,6 @@
             text-decoration: none;
             display: inline-block;
         }
-
         .button:hover {
             box-shadow:
                 inset 0px -6px 18px -6px rgba(3, 15, 20, 1),
@@ -70,7 +63,6 @@
                 inset -12px 0px 12px -6px rgba(3, 15, 20, 0),
                 -1px -1px 6px 0px rgba(54, 69, 75, 1);
         }
-
         .button:active {
             box-shadow:
                 inset 0px -12px 12px -6px rgba(3, 15, 20, 1),
@@ -79,7 +71,6 @@
                 inset -12px 0px 12px -6px rgba(3, 15, 20, 1),
                 -1px -1px 6px 0px rgba(54, 69, 75, 1);
         }
-
         .text {
             color: #d0a756;
             font-family: "Montserrat", sans-serif;
@@ -88,24 +79,47 @@
             transition: all 0.3s;
             width: fit-content;
         }
-
         .button:hover .text {
             transform: scale(0.9);
         }
-
         .button:active .text {
             transform: scale(0.8);
+        }
+
+        /* Downtime banner */
+        #downtime-banner {
+            display: none;
+            width: 90%;
+            margin: 0 auto 2.5em auto;
+            border: 2px solid #e53e3e;
+            border-radius: 28px;
+            padding: 1.2em 2em;
+            box-sizing: border-box;
+            background: transparent;
+        }
+        #downtime-banner .downtime-label {
+            font-family: "Montserrat", sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            color: #e53e3e;
+            text-transform: uppercase;
+            margin-bottom: 0.4em;
+        }
+        #downtime-banner .downtime-message {
+            font-family: "Montserrat", sans-serif;
+            font-size: 1rem;
+            color: #f8f8f8;
+        }
+        #downtime-banner .downtime-message p {
+            margin: 0.2em 0;
         }
     </style>
 </head>
 <body>
-
     <a href="https://youtu.be/Srz0k_MBUHk">
         <img src="landing.png" alt="Landing Image" class="landing-img">
     </a>
-
     <h1 class="greeting">Oye mate!</h1>
-
     <div class="button-row">
         <a href="https://matee.xyz/main" class="button">
             <div class="text">Nyilvános Szolgáltatások</div>
@@ -115,5 +129,28 @@
         </a>
     </div>
 
+    <div id="downtime-banner">
+        <div class="downtime-label">Tervezett üzemszünet</div>
+        <div class="downtime-message" id="downtime-text"></div>
+    </div>
+
+    <script>
+        const FIREBASE_URL = 'https://downtime-message-default-rtdb.europe-west1.firebasedatabase.app/downtime_message.json';
+
+        fetch(FIREBASE_URL)
+            .then(r => r.json())
+            .then(msg => {
+                if (msg && msg.trim() !== '') {
+                    const el = document.getElementById('downtime-text');
+                    msg.split('$').forEach(line => {
+                        const p = document.createElement('p');
+                        p.textContent = line;
+                        el.appendChild(p);
+                    });
+                    document.getElementById('downtime-banner').style.display = 'block';
+                }
+            })
+            .catch(() => {});
+    </script>
 </body>
 </html>
