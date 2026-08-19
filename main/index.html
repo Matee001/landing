@@ -1,174 +1,360 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matee</title>
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="darkreader-lock" />
+    <meta name="theme-color" content="#000000" />
+    <title>matee.xyz</title>
+    <meta name="description" content="Navigation landing page for matee.xyz" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap" rel="stylesheet">
     <style>
-        /* Basic styling */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      :root {
+        color-scheme: dark;
+        forced-color-adjust: none;
+        --bg-color: #000000;
+        --accent-color: #A3F7BF;
+      }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #121212; /* Dark background color */
-            font-family: Arial, sans-serif; /* Font family */
-            color: #ffffff; /* Text color */
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
 
-        /* Light mode styling */
-        .light-mode {
-            background-color: #f5f5f5;
-            color: #121212;
-        }
+      .slabo-27px-regular {
+        font-family: "Slabo 27px", serif;
+        font-weight: 400;
+        font-style: normal;
+      }
 
-        /* Container for main content */
-        .container {
-            background: rgba(33, 33, 33, 0.9); /* Dark background with transparency */
-            padding: 30px;
-            width: 320px;
-            border-radius: 15px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7); /* Shadow effect */
-            text-align: center;
-            transition: background 0.3s ease;
-        }
+      html, body {
+        background-color: #000000 !important;
+        color: #A3F7BF !important;
+        min-height: 100vh;
+        width: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
 
-        /* Light mode container styling */
-        .light-mode .container {
-            background-color: #e6f5ff; /* Light blue color for container in light mode */
-        }
+      /* Transitions & animation overrides */
+      a, div, button {
+        transition: none !important;
+        animation: none !important;
+      }
 
-        /* Header style */
-        .header {
-            font-size: 32px;
-            font-weight: bold;
-            color: #90caf9; /* Light blue color */
-            margin-bottom: 30px;
-            transition: color 0.3s ease;
-        }
+      a:hover, a:active, a:focus,
+      button:hover, button:active, button:focus {
+        background: transparent !important;
+        color: #A3F7BF !important;
+        outline: none !important;
+      }
 
-        /* Light mode header color */
-        .light-mode .header {
-            color: #537fad; /* Darker blue color for better readability in light mode */
-        }
+      /* Dark reader / extension isolation */
+      [data-darkreader-inline-bgcolor],
+      [data-darkreader-inline-color],
+      [data-darkreader-inline-border] {
+        background-color: #000000 !important;
+        color: #A3F7BF !important;
+      }
 
-        /* Button style */
-        .btn {
-            background-color: #90caf9; /* Light blue button */
-            color: #121212; /* Dark text color */
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-            width: 100%;
-            text-align: center;
-            margin-bottom: 15px;
-            transition: background-color 0.3s ease;
-        }
+      /* Standalone container layout */
+      #main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        width: 100%;
+        background-color: #000000;
+        color: #A3F7BF;
+        position: relative;
+        user-select: none;
+        padding: 5rem 1rem 2rem 1rem;
+      }
 
-        .btn:hover {
-            background-color: #81c784; /* Green on hover */
-        }
+      /* Top bar container */
+      #top-bar {
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10;
+      }
 
-        /* Buttons next to each other */
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-        }
+      /* Top left back arrow */
+      #back-arrow-link {
+        color: #ffffff !important;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
 
-        .button-container .btn {
-            width: 48%;
-        }
+      #back-arrow-link svg {
+        width: 1.625rem;
+        height: 1.625rem;
+        stroke: currentColor;
+        display: block;
+      }
+
+      /* Top middle title text */
+      #top-title {
+        color: #ffffff !important;
+        font-size: 1.5rem;
+        line-height: 1;
+        letter-spacing: 0.04em;
+        text-align: center;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.5rem;
+      }
+
+      /* Top right GitHub icon */
+      #github-link {
+        color: #ffffff !important;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      #github-link svg {
+        width: 1.625rem;
+        height: 1.625rem;
+        fill: currentColor;
+        display: block;
+      }
+
+      /* Centered stack */
+      #buttons-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 20rem; /* 320px */
+      }
+
+      /* Button styles */
+      .btn {
+        width: 100%;
+        padding: 1rem 1rem;
+        text-align: center;
+        border: 1px solid #A3F7BF;
+        color: #A3F7BF;
+        background: transparent;
+        text-decoration: none;
+        font-size: 1.125rem;
+        font-weight: 500;
+        letter-spacing: 0.025em;
+        display: block;
+      }
+
+      .btn-parent {
+        cursor: default;
+      }
+
+      /* Tree group */
+      #finances-tree-group {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      #finances-subbuttons {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding-left: 2rem;
+        position: relative;
+      }
+
+      /* Vertical tree stem line: starts from the parent node bottom border */
+      .tree-stem {
+        position: absolute;
+        left: 1rem;
+        top: -0.75rem;
+        bottom: 24px;
+        width: 1px;
+        background-color: #A3F7BF;
+      }
+
+      /* Sub button item & branch connector */
+      .tree-item {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .tree-branch {
+        position: absolute;
+        left: -1rem;
+        width: 1rem;
+        height: 1px;
+        background-color: #A3F7BF;
+      }
+
+      .btn-sub {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        text-align: center;
+        border: 1px solid #A3F7BF;
+        color: #A3F7BF;
+        background: transparent;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.025em;
+        display: block;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="main-container">
+      <!-- Top bar with back arrow (left), matee.xyz in Slabo 27px (center), and GitHub icon (right) -->
+      <header id="top-bar">
+        <a
+          id="back-arrow-link"
+          href="../index.html"
+          aria-label="Back to parent directory"
+          title="Back to parent directory"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </a>
 
-    <div class="container">
-        <div class="header">
-            matee.xyz
+        <span id="top-title" class="slabo-27px-regular">
+          matee.xyz
+        </span>
+
+        <a
+          id="github-link"
+          href="https://github.com/Matee001"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub profile"
+          title="GitHub profile"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            />
+          </svg>
+        </a>
+      </header>
+
+      <!-- Centered stack of buttons -->
+      <div id="buttons-stack" role="navigation" aria-label="Links">
+        <!-- 1. Profile -->
+        <a
+          id="btn-profile"
+          href="https://profile.matee.xyz/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn"
+        >
+          PROFILE
+        </a>
+
+        <!-- 2. Finances (Parent + Tree Sub-buttons) -->
+        <div id="finances-tree-group">
+          <!-- Parent button (does not do anything) -->
+          <div
+            id="btn-finances-parent"
+            role="button"
+            aria-expanded="true"
+            tabindex="-1"
+            class="btn btn-parent"
+          >
+            FINANCES
+          </div>
+
+          <!-- Sub-buttons container with tree branch lines -->
+          <div id="finances-subbuttons">
+            <!-- Vertical stem line connecting completely to parent node -->
+            <div class="tree-stem" aria-hidden="true"></div>
+
+            <!-- Sub-button 1: Tracker -->
+            <div class="tree-item">
+              <div class="tree-branch" aria-hidden="true"></div>
+              <a
+                id="btn-tracker"
+                href="https://debts.matee.xyz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-sub"
+              >
+                TRACKER
+              </a>
+            </div>
+
+            <!-- Sub-button 2: Accounts -->
+            <div class="tree-item">
+              <div class="tree-branch" aria-hidden="true"></div>
+              <a
+                id="btn-accounts"
+                href="https://accounts.matee.xyz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-sub"
+              >
+                ACCOUNTS
+              </a>
+            </div>
+          </div>
         </div>
 
-        <a href="https://profile.matee.xyz" target="_blank">
-            <button class="btn" id="profile-btn">Profile</button>
+        <!-- 3. Status -->
+        <a
+          id="btn-status"
+          href="https://status.matee.xyz/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn"
+        >
+          STATUS
         </a>
-        <a href="https://debts.matee.xyz" target="_blank">
-            <button class="btn" id="debts-btn">Debts</button>
-        </a>
-        <a href="https://accounts.matee.xyz" target="_blank">
-            <button class="btn" id="accounts-btn">Accounts</button>
-        </a>
-        <a href="https://status.matee.xyz" target="_blank">
-            <button class="btn" id="status-btn">Status</button>
-        </a>
-        
-        <!-- New Appointments button -->
-        <a href="https://appointments-7f596.web.app" target="_blank">
-            <button class="btn" id="appointments-btn">Appointments</button>
-        </a>
-
-        <!-- Buttons for dark/light mode and language toggle -->
-        <div class="button-container">
-            <button class="btn" id="mode-toggle">Switch to Light Mode</button>
-            <button class="btn" id="lang-toggle">Váltás magyarra</button>
-        </div>
+      </div>
     </div>
-
-    <script>
-        // Default settings
-        let isDarkMode = true;
-        let isEnglish = true;
-
-        const modeButton = document.getElementById('mode-toggle');
-        const langButton = document.getElementById('lang-toggle');
-        const body = document.body;
-
-        // Function to toggle dark and light mode
-        modeButton.addEventListener('click', function() {
-            isDarkMode = !isDarkMode;
-            if (isDarkMode) {
-                body.classList.remove('light-mode');
-                modeButton.textContent = isEnglish ? 'Switch to Light Mode' : 'Világos mód'; // Updated to 'Sötét mód' for Hungarian
-            } else {
-                body.classList.add('light-mode');
-                modeButton.textContent = isEnglish ? 'Switch to Dark Mode' : 'Sötét mód';
-            }
-        });
-
-        // Function to toggle between English and Hungarian
-        langButton.addEventListener('click', function() {
-            isEnglish = !isEnglish;
-            if (isEnglish) {
-                langButton.textContent = 'Váltás magyarra';
-                // Update text content for English
-                document.querySelector('.header').textContent = 'matee.xyz';
-                document.querySelectorAll('.btn')[0].textContent = 'Profile';
-                document.querySelectorAll('.btn')[1].textContent = 'Debts';
-                document.querySelectorAll('.btn')[2].textContent = 'Accounts';
-                document.querySelectorAll('.btn')[3].textContent = 'Status';
-                document.querySelectorAll('.btn')[4].textContent = 'Appointments';
-                modeButton.textContent = 'Switch to Light Mode'; // Update dark mode button label in English
-            } else {
-                langButton.textContent = 'Switch to English';
-                // Update text content for Hungarian
-                document.querySelector('.header').textContent = 'matee.xyz';
-                document.querySelectorAll('.btn')[0].textContent = 'Profil';
-                document.querySelectorAll('.btn')[1].textContent = 'Tartozások';
-                document.querySelectorAll('.btn')[2].textContent = 'Fiókok';
-                document.querySelectorAll('.btn')[3].textContent = 'Státusz';
-                document.querySelectorAll('.btn')[4].textContent = 'Időpontfoglalás';
-                modeButton.textContent = 'Világos mód'; // Updated dark mode button text for Hungarian
-            }
-        });
-    </script>
-
-</body>
+  </body>
 </html>
