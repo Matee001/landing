@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="darkreader-lock" />
+    <meta name="theme-color" content="#000000" />
+    <title>matee.xyz - videos</title>
+    <meta name="description" content="Video editing progress tracker for matee.xyz" />
+    <link rel="icon" type="image/png" href="fav.png" />
+    <link rel="apple-touch-icon" href="fav.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        forced-color-adjust: none;
+        --bg-color: #000000;
+        --accent-color: #A3F7BF;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .slabo-27px-regular {
+        font-family: "Slabo 27px", serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      html,
+      body {
+        background-color: #000000 !important;
+        color: #A3F7BF !important;
+        min-height: 100vh;
+        width: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+
+      /* Transitions & animation overrides */
+      a,
+      div,
+      span,
+      button {
+        transition: none !important;
+        animation: none !important;
+      }
+
+      a:hover,
+      a:active,
+      a:focus {
+        background: transparent !important;
+        outline: none !important;
+      }
+
+      #top-bar a:hover,
+      #top-bar a:active,
+      #top-bar a:focus {
+        color: #ffffff !important;
+      }
+
+      /* Dark reader / extension isolation */
+      [data-darkreader-inline-bgcolor],
+      [data-darkreader-inline-color],
+      [data-darkreader-inline-border] {
+        background-color: #000000 !important;
+        color: #A3F7BF !important;
+      }
+
+      /* Page layout */
+      #main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        width: 100%;
+        background-color: #000000;
+        color: #A3F7BF;
+        position: relative;
+        user-select: none;
+        padding: 5.5rem 1rem 3rem 1rem;
+      }
+
+      /* Top bar container */
+      #top-bar {
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 10;
+      }
+
+      /* Top left back arrow */
+      #back-arrow-link {
+        color: #ffffff !important;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      #back-arrow-link svg {
+        width: 1.625rem;
+        height: 1.625rem;
+        stroke: currentColor;
+        display: block;
+      }
+
+      /* Top middle title text */
+      #top-title {
+        color: #ffffff !important;
+        font-size: 1.5rem;
+        line-height: 1;
+        letter-spacing: 0.04em;
+        text-align: center;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.5rem;
+      }
+
+      /* Top right GitHub icon */
+      #github-link {
+        color: #ffffff !important;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      #github-link svg {
+        width: 1.625rem;
+        height: 1.625rem;
+        fill: currentColor;
+        display: block;
+      }
+
+      /* Centered stack of video boxes */
+      #videos-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        max-width: 24rem;
+      }
+
+      /* Individual video progress box */
+      .video-box {
+        width: 100%;
+        border: 1px solid #A3F7BF;
+        background: transparent;
+        padding: 0.875rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+      }
+
+      .video-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .video-id {
+        color: #A3F7BF;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      /* Progress bar row: [left time] [bar] [right total] */
+      .progress-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+      }
+
+      .time-label {
+        color: #A3F7BF;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.03em;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        flex-shrink: 0;
+        min-width: 2.75rem;
+      }
+
+      .time-current {
+        text-align: left;
+      }
+
+      .time-total {
+        text-align: right;
+      }
+
+      .progress-track {
+        flex: 1;
+        height: 0.75rem;
+        border: 1px solid #A3F7BF;
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background-color: #A3F7BF;
+        width: 0%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main-container">
+      <!-- Top bar with back arrow (left), matee.xyz in Slabo 27px (center), and GitHub icon (right) -->
+      <header id="top-bar">
+        <a
+          id="back-arrow-link"
+          href="index.html"
+          aria-label="Back to index"
+          title="Back to index"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </a>
+
+        <span id="top-title" class="slabo-27px-regular">matee.xyz</span>
+
+        <a
+          id="github-link"
+          href="https://github.com/Matee001"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub profile"
+          title="GitHub profile"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            />
+          </svg>
+        </a>
+      </header>
+
+      <!-- 10 video progress boxes (UI labels e01 - e10 backed by Firestore videos/v01 - videos/v10) -->
+      <main id="videos-stack" aria-label="Video editing progress"></main>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+      import {
+        doc,
+        getDocFromServer,
+        getFirestore,
+        onSnapshot
+      } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+      const firebaseConfig = {
+        projectId: 'gen-lang-client-0861400224',
+        appId: '1:511101439134:web:bd05d32decefa16b2ebf8f',
+        apiKey: 'AIzaSyDIbyi6StRqH6t5YUdth27xYfX-N9KiFLs',
+        authDomain: 'gen-lang-client-0861400224.firebaseapp.com',
+        firestoreDatabaseId: 'ai-studio-landingpage-e82bbe11-632f-4334-9d18-46c1fe2c3160',
+        storageBucket: 'gen-lang-client-0861400224.firebasestorage.app',
+        messagingSenderId: '511101439134'
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+      const OperationType = {
+        CREATE: 'create',
+        UPDATE: 'update',
+        DELETE: 'delete',
+        LIST: 'list',
+        GET: 'get',
+        WRITE: 'write'
+      };
+
+      function handleFirestoreError(error, operationType, path) {
+        const errInfo = {
+          error: error instanceof Error ? error.message : String(error),
+          authInfo: {
+            userId: null,
+            email: null,
+            emailVerified: null,
+            isAnonymous: null,
+            tenantId: null,
+            providerInfo: []
+          },
+          operationType,
+          path
+        };
+        console.error('Firestore Error: ', JSON.stringify(errInfo));
+        throw new Error(JSON.stringify(errInfo));
+      }
+
+      async function testConnection() {
+        try {
+          await getDocFromServer(doc(db, 'test', 'connection'));
+        } catch (error) {
+          if (error instanceof Error && error.message.includes('the client is offline')) {
+            console.error('Please check your Firebase configuration.');
+          }
+        }
+      }
+
+      const TOTAL_LABEL = '25:00';
+      const TOTAL_SECONDS = 25 * 60;
+      const VIDEO_KEYS = [
+        'v01', 'v02', 'v03', 'v04', 'v05',
+        'v06', 'v07', 'v08', 'v09', 'v10'
+      ];
+
+      function toUiLabel(dbKey) {
+        return 'e' + dbKey.slice(1);
+      }
+
+      function parseProgressToSeconds(value) {
+        if (typeof value !== 'string') return 0;
+        const parts = value.trim().split(':');
+        if (parts.length !== 2) return 0;
+        const minutes = parseInt(parts[0], 10);
+        const seconds = parseInt(parts[1], 10);
+        if (Number.isNaN(minutes) || Number.isNaN(seconds)) return 0;
+        const total = Math.max(0, minutes * 60 + seconds);
+        return Math.min(total, TOTAL_SECONDS);
+      }
+
+      function formatProgressLabel(value) {
+        if (typeof value !== 'string' || !value.includes(':')) return '00:00';
+        const parts = value.trim().split(':');
+        const m = String(Math.max(0, parseInt(parts[0], 10) || 0)).padStart(2, '0');
+        const s = String(Math.min(59, Math.max(0, parseInt(parts[1], 10) || 0))).padStart(2, '0');
+        return m + ':' + s;
+      }
+
+      const stack = document.getElementById('videos-stack');
+      const boxRefs = {};
+
+      function buildInitialBoxes() {
+        stack.innerHTML = '';
+
+        VIDEO_KEYS.forEach((key) => {
+          const uiLabel = toUiLabel(key);
+
+          const box = document.createElement('section');
+          box.className = 'video-box';
+          box.id = 'box-' + uiLabel;
+
+          const header = document.createElement('div');
+          header.className = 'video-header';
+
+          const idLabel = document.createElement('span');
+          idLabel.className = 'video-id';
+          idLabel.textContent = uiLabel;
+
+          header.appendChild(idLabel);
+
+          const progressRow = document.createElement('div');
+          progressRow.className = 'progress-row';
+
+          const currentEl = document.createElement('span');
+          currentEl.className = 'time-label time-current';
+          currentEl.textContent = '00:00';
+
+          const track = document.createElement('div');
+          track.className = 'progress-track';
+          track.setAttribute('role', 'progressbar');
+          track.setAttribute('aria-label', uiLabel + ' editing progress');
+          track.setAttribute('aria-valuemin', '0');
+          track.setAttribute('aria-valuemax', String(TOTAL_SECONDS));
+          track.setAttribute('aria-valuenow', '0');
+
+          const fill = document.createElement('div');
+          fill.className = 'progress-fill';
+          fill.style.width = '0.00%';
+
+          track.appendChild(fill);
+
+          const totalEl = document.createElement('span');
+          totalEl.className = 'time-label time-total';
+          totalEl.textContent = TOTAL_LABEL;
+
+          progressRow.appendChild(currentEl);
+          progressRow.appendChild(track);
+          progressRow.appendChild(totalEl);
+
+          box.appendChild(header);
+          box.appendChild(progressRow);
+          stack.appendChild(box);
+
+          boxRefs[key] = { currentEl, track, fill };
+        });
+      }
+
+      function updateBoxUI(key, rawProgress) {
+        const ref = boxRefs[key];
+        if (!ref) return;
+        const seconds = parseProgressToSeconds(rawProgress);
+        const percentage = (seconds / TOTAL_SECONDS) * 100;
+        const formatted = formatProgressLabel(rawProgress);
+
+        ref.currentEl.textContent = formatted;
+        ref.fill.style.width = percentage.toFixed(2) + '%';
+        ref.track.setAttribute('aria-valuenow', String(seconds));
+      }
+
+      function subscribeVideos() {
+        VIDEO_KEYS.forEach((key) => {
+          const path = 'videos/' + key;
+          onSnapshot(
+            doc(db, 'videos', key),
+            (snapshot) => {
+              if (snapshot.exists()) {
+                const data = snapshot.data();
+                updateBoxUI(key, data && data.progress ? data.progress : '00:00');
+              } else {
+                updateBoxUI(key, '00:00');
+              }
+            },
+            (error) => {
+              handleFirestoreError(error, OperationType.GET, path);
+            }
+          );
+        });
+      }
+
+      buildInitialBoxes();
+      testConnection();
+      subscribeVideos();
+    </script>
+  </body>
+</html>
