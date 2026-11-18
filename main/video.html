@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#000000" />
     <title>matee.xyz - videos</title>
     <meta name="description" content="Video editing progress tracker for matee.xyz" />
-    <link rel="icon" type="image/png" href="fav.png" />
-    <link rel="apple-touch-icon" href="fav.png" />
+    <link rel="icon" type="image/png" href="../fav.png" />
+    <link rel="apple-touch-icon" href="../fav.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -128,10 +128,11 @@
       /* Top middle title text */
       #top-title {
         color: #ffffff !important;
-        font-size: 1.5rem;
+        font-size: clamp(1.125rem, 4.5vw, 1.5rem);
         line-height: 1;
         letter-spacing: 0.04em;
         text-align: center;
+        white-space: nowrap;
         user-select: none;
         display: inline-flex;
         align-items: center;
@@ -167,15 +168,19 @@
         max-width: 24rem;
       }
 
-      /* Individual video progress box */
+      /* Individual video progress box (hidden until loaded and > 00:00) */
       .video-box {
         width: 100%;
         border: 1px solid #A3F7BF;
         background: transparent;
         padding: 0.875rem 1rem;
-        display: flex;
+        display: none;
         flex-direction: column;
         gap: 0.625rem;
+      }
+
+      .video-box.visible {
+        display: flex;
       }
 
       .video-header {
@@ -262,7 +267,7 @@
           </svg>
         </a>
 
-        <span id="top-title" class="slabo-27px-regular">matee.xyz</span>
+        <span id="top-title" class="slabo-27px-regular">szerkesztés folyamat</span>
 
         <a
           id="github-link"
@@ -436,11 +441,11 @@
           box.appendChild(progressRow);
           stack.appendChild(box);
 
-          boxRefs[key] = { currentEl, track, fill };
+          boxRefs[key] = { box, currentEl, track, fill };
         });
       }
 
-      function updateBoxUI(key, rawProgress) {
+      function updateBoxUI(key, rawProgress, isLoaded) {
         const ref = boxRefs[key];
         if (!ref) return;
         const seconds = parseProgressToSeconds(rawProgress);
@@ -450,6 +455,12 @@
         ref.currentEl.textContent = formatted;
         ref.fill.style.width = percentage.toFixed(2) + '%';
         ref.track.setAttribute('aria-valuenow', String(seconds));
+
+        if (isLoaded && seconds > 0) {
+          ref.box.classList.add('visible');
+        } else {
+          ref.box.classList.remove('visible');
+        }
       }
 
       function subscribeVideos() {
@@ -460,9 +471,9 @@
             (snapshot) => {
               if (snapshot.exists()) {
                 const data = snapshot.data();
-                updateBoxUI(key, data && data.progress ? data.progress : '00:00');
+                updateBoxUI(key, data && data.progress ? data.progress : '00:00', true);
               } else {
-                updateBoxUI(key, '00:00');
+                updateBoxUI(key, '00:00', false);
               }
             },
             (error) => {
@@ -478,3 +489,4 @@
     </script>
   </body>
 </html>
+
